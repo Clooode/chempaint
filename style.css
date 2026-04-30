@@ -1,0 +1,167 @@
+#toolbar {
+  width: 220px;
+  background: #fdf6e3;
+  border-right: 3px solid #d0b080;
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: "Press Start 2P", monospace;
+}
+body {
+  margin: 0;
+  display: flex;
+  height: 100vh; /* This forces both columns to match height */
+}
+
+#canvasContainer {
+  flex: 1;
+  position: relative;
+
+  background-image: url("assets/background.png");
+  background-size: 100% 100%;  /* Force it to match the container height */
+  background-repeat: no-repeat;
+  background-position: center;
+
+  image-rendering: pixelated;
+}
+
+#canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.tool-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+}
+
+.section-icon {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+}
+
+.divider {
+  height: 2px;
+  background: #d0b080;
+  margin: 6px 0;
+}
+
+/* ELEMENT BUTTONS */
+#elementPicker,
+#bondPicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.element-btn,
+.bond-btn {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #aaa;
+  border-radius: 6px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: transform 0.1s ease;
+}
+
+/* TOOL BUTTONS (MOVE / ERASE / UNDO / REDO) */
+.tool-btn.small,
+.action-btn.small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  border: 2px solid #aaa;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.tool-btn.small img,
+.action-btn.small img {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+}
+
+/* HOVER + ACTIVE STATES */
+.element-btn:hover,
+.bond-btn:hover,
+.tool-btn.small:hover,
+.action-btn.small:hover {
+  transform: scale(1.1);
+}
+
+.element-btn:active,
+.bond-btn:active {
+  transform: scale(0.9);
+}
+
+/* ELEMENT ICON SWAPS */
+.element-btn[data-element="C"]  { background-image: url("assets/elements/C.png"); }
+.element-btn[data-element="H"]  { background-image: url("assets/elements/H.png"); }
+.element-btn[data-element="O"]  { background-image: url("assets/elements/O.png"); }
+.element-btn[data-element="N"]  { background-image: url("assets/elements/N.png"); }
+.element-btn[data-element="S"]  { background-image: url("assets/elements/S.png"); }
+.element-btn[data-element="Cl"] { background-image: url("assets/elements/Cl.png"); }
+.element-btn[data-element="Br"] { background-image: url("assets/elements/Br.png"); }
+.element-btn[data-element="F"]  { background-image: url("assets/elements/F.png"); }
+
+/* GLOW ON HOVER */
+.element-btn:hover[data-element="C"]  { background-image: url("assets/elements/C_glow.png"); }
+.element-btn:hover[data-element="H"]  { background-image: url("assets/elements/H_glow.png"); }
+.element-btn:hover[data-element="O"]  { background-image: url("assets/elements/O_glow.png"); }
+.element-btn:hover[data-element="N"]  { background-image: url("assets/elements/N_glow.png"); }
+.element-btn:hover[data-element="S"]  { background-image: url("assets/elements/S_glow.png"); }
+.element-btn:hover[data-element="Cl"] { background-image: url("assets/elements/Cl_glow.png"); }
+.element-btn:hover[data-element="Br"] { background-image: url("assets/elements/Br_glow.png"); }
+.element-btn:hover[data-element="F"]  { background-image: url("assets/elements/F_glow.png"); }
+
+/* SQUISH ON CLICK */
+.element-btn:active[data-element="C"]  { background-image: url("assets/elements/C_squish.png"); }
+.element-btn:active[data-element="H"]  { background-image: url("assets/elements/H_squish.png"); }
+.element-btn:active[data-element="O"]  { background-image: url("assets/elements/O_squish.png"); }
+.element-btn:active[data-element="N"]  { background-image: url("assets/elements/N_squish.png"); }
+.element-btn:active[data-element="S"]  { background-image: url("assets/elements/S_squish.png"); }
+.element-btn:active[data-element="Cl"] { background-image: url("assets/elements/Cl_squish.png"); }
+.element-btn:active[data-element="Br"] { background-image: url("assets/elements/Br_squish.png"); }
+.element-btn:active[data-element="F"]  { background-image: url("assets/elements/F_squish.png"); }
+
+.bond-btn {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #aaa;
+  border-radius: 6px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: transform 0.1s ease;
+}
+
+/* NORMAL */
+.bond-btn[data-bond="single"] { background-image: url("assets/bonds/single.png"); }
+.bond-btn[data-bond="double"] { background-image: url("assets/bonds/double.png"); }
+.bond-btn[data-bond="triple"] { background-image: url("assets/bonds/triple.png"); }
+
+

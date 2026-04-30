@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChemPaint!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+ <div id="toolbar">
+  <h2>ChemPaint</h2>
+
+  <!-- ATOMS SECTION -->
+  <div class="tool-section">
+    <div class="section-header">
+      <img src="assets/icons/atom.png" class="section-icon">
+      <span>Select Atom</span>
+    </div>
+
+    <div id="elementPicker">
+      <button class="element-btn" data-element="C"></button>
+      <button class="element-btn" data-element="H"></button>
+      <button class="element-btn" data-element="O"></button>
+      <button class="element-btn" data-element="N"></button>
+      <button class="element-btn" data-element="S"></button>
+      <button class="element-btn" data-element="Cl"></button>
+      <button class="element-btn" data-element="Br"></button>
+      <button class="element-btn" data-element="F"></button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BONDS SECTION -->
+  <div class="tool-section">
+    <div class="section-header">
+      <img src="assets/icons/bond.png" class="section-icon">
+      <span>Make Bonds</span>
+    </div>
+
+    <div id="bondPicker">
+      <button class="bond-btn" data-bond="single"></button>
+      <button class="bond-btn" data-bond="double"></button>
+      <button class="bond-btn" data-bond="triple"></button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- MOVE / ERASE -->
+  <div class="tool-section">
+    <button class="tool-btn small" data-tool="move">
+      <img src="assets/icons/move.png">
+      <span>Move</span>
+    </button>
+
+    <button class="tool-btn small" data-tool="erase">
+      <img src="assets/icons/erase.png">
+      <span>Erase</span>
+    </button>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ACTIONS -->
+  <div class="tool-section">
+    <button id="undoBtn" class="action-btn small">
+      <img src="assets/icons/undo.png">
+      <span>Undo</span>
+    </button>
+
+    <button id="redoBtn" class="action-btn small">
+      <img src="assets/icons/redo.png">
+      <span>Redo</span>
+    </button>
+
+    <button id="exportBtn" class="action-btn small">
+      <img src="assets/icons/save.png">
+      <span>Export</span>
+    </button>
+  </div>
+</div>
+
+<div id="canvasContainer">
+  <svg id="canvas" width="100%" height="100%"></svg>
+</div>
+
+
+  <script src="main.js"></script>
+</body>
+</html>
