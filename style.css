@@ -93,7 +93,7 @@ body {
   border-radius: 6px;
   background: #fff;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 20px;
 }
 
 .tool-btn.small img,
@@ -164,4 +164,24 @@ body {
 .bond-btn[data-bond="double"] { background-image: url("assets/bonds/double.png"); }
 .bond-btn[data-bond="triple"] { background-image: url("assets/bonds/triple.png"); }
 
+
+.element-btn,
+.bond-btn {
+  transition: transform 0.12s ease-out;
+}
+
+.element-btn.clicked,
+.bond-btn.clicked {
+  animation: squish 0.5s ease-out;
+}
+
+@keyframes squish {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.88); }
+  100% { transform: scale(1); }
+}
+.bond,
+.bond image {
+  pointer-events: none;
+}
 

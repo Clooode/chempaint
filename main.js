@@ -165,32 +165,34 @@ function drawAtom(atom) {
 
   el.addEventListener("click", e => {
 
-  // If we are already holding an atom, let the canvas handle the drop
-  if (currentTool === "move" && pickedAtom) {
-    return;
-  }
-
-  e.stopPropagation();
-
-  if (currentTool === "erase") {
-    deleteAtom(el);
-    return;
-  }
-
-  if (currentTool === "bond") {
-    handleBondClick(el);
-    return;
-  }
-
-  if (currentTool === "move") {
-    if (!pickedAtom) {
-      pickedAtom = el;
-      playSound("atom/pickup");
+    // If we are already holding an atom, let the canvas handle the drop
+    if (currentTool === "move" && pickedAtom) {
       return;
     }
-  }
-});}
 
+    e.stopPropagation();
+
+    if (currentTool === "erase") {
+      deleteAtom(el);
+      return;
+    }
+
+    if (currentTool === "bond") {
+      handleBondClick(el);
+      return;
+    }
+
+    if (currentTool === "move") {
+      if (!pickedAtom) {
+        pickedAtom = el;
+        playSound("atom/pickup");
+        return;
+      }
+    }
+  });
+
+  return el;
+}
 
 let currentElementType = "C";
 
@@ -352,63 +354,121 @@ function deleteBond(bondEl) {
 ============================================================ */
 
 
+// window.addEventListener("mousemove", e => {
+// if (!pickedAtom) return;
+
+//   const id = Number(pickedAtom.dataset.id);
+//   const atom = atoms.find(a => a.id === id);
+
+//   const pt = canvas.createSVGPoint();
+//   pt.x = e.clientX;
+//   pt.y = e.clientY;
+//   const svgP = pt.matrixTransform(canvas.getScreenCTM().inverse());
+
+//   // svgP is top-left of the image, so add half-size to get center
+// // Check how many bonds this atom has
+// const connected = bonds.filter(b => b.a === id || b.b === id);
+
+// // If no bonds → free movement
+// if (connected.length === 0) {
+//   atom.x = svgP.x + 24;
+//   atom.y = svgP.y + 24;
+// }
+
+// // If exactly one bond → snap angle
+// else if (connected.length === 1) {
+//   const bond = connected[0];
+//   const anchorId = bond.a === id ? bond.b : bond.a;
+//   const anchor = atoms.find(a => a.id === anchorId);
+
+//   // Raw vector from anchor to mouse
+//   const dx = (svgP.x + 24) - anchor.x;
+//   const dy = (svgP.y + 24) - anchor.y;
+
+//   const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+//   const snapped = snapToNearest60(angle);
+
+//   const rad = snapped * Math.PI / 180;
+//   const length = Math.sqrt(dx*dx + dy*dy);
+
+//   atom.x = anchor.x + Math.cos(rad) * length;
+//   atom.y = anchor.y + Math.sin(rad) * length;
+// }
+
+// // If 2+ bonds → do NOT snap (too constrained)
+// else {
+//   atom.x = svgP.x + 24;
+//   atom.y = svgP.y + 24;
+// }
+
+
+//   pickedAtom.setAttribute("x", atom.x - 24);
+//   pickedAtom.setAttribute("y", atom.y - 24);
+
+//   // redraw bonds
+//   bonds.forEach(b => {
+//     if (b.a === id || b.b === id) {
+//       const a = atoms.find(a => a.id === b.a);
+//       const bb = atoms.find(a => a.id === b.b);
+//       drawBondImage(b.el, a, bb, b.order);
+//     }
+//   });
+// });
 window.addEventListener("mousemove", e => {
-if (!pickedAtom) return;
+  if (!pickedAtom) return;
 
   const id = Number(pickedAtom.dataset.id);
   const atom = atoms.find(a => a.id === id);
+
+  // Safety: if something is off, bail early
+  if (!atom) {
+    console.warn("No atom found for pickedAtom id", id, pickedAtom);
+    return;
+  }
 
   const pt = canvas.createSVGPoint();
   pt.x = e.clientX;
   pt.y = e.clientY;
   const svgP = pt.matrixTransform(canvas.getScreenCTM().inverse());
 
-  // svgP is top-left of the image, so add half-size to get center
-// Check how many bonds this atom has
-const connected = bonds.filter(b => b.a === id || b.b === id);
+  const connected = bonds.filter(b => b.a === id || b.b === id);
 
-// If no bonds → free movement
-if (connected.length === 0) {
-  atom.x = svgP.x + 24;
-  atom.y = svgP.y + 24;
-}
+  if (connected.length === 0) {
+    atom.x = svgP.x + 24;
+    atom.y = svgP.y + 24;
+  } else if (connected.length === 1) {
+    const bond = connected[0];
+    const anchorId = bond.a === id ? bond.b : bond.a;
+    const anchor = atoms.find(a => a.id === anchorId);
 
-// If exactly one bond → snap angle
-else if (connected.length === 1) {
-  const bond = connected[0];
-  const anchorId = bond.a === id ? bond.b : bond.a;
-  const anchor = atoms.find(a => a.id === anchorId);
+    if (!anchor) return;
 
-  // Raw vector from anchor to mouse
-  const dx = (svgP.x + 24) - anchor.x;
-  const dy = (svgP.y + 24) - anchor.y;
+    const dx = (svgP.x + 24) - anchor.x;
+    const dy = (svgP.y + 24) - anchor.y;
 
-  const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-  const snapped = snapToNearest60(angle);
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    const snapped = snapToNearest60(angle);
 
-  const rad = snapped * Math.PI / 180;
-  const length = Math.sqrt(dx*dx + dy*dy);
+    const rad = snapped * Math.PI / 180;
+    const length = Math.sqrt(dx*dx + dy*dy);
 
-  atom.x = anchor.x + Math.cos(rad) * length;
-  atom.y = anchor.y + Math.sin(rad) * length;
-}
-
-// If 2+ bonds → do NOT snap (too constrained)
-else {
-  atom.x = svgP.x + 24;
-  atom.y = svgP.y + 24;
-}
-
+    atom.x = anchor.x + Math.cos(rad) * length;
+    atom.y = anchor.y + Math.sin(rad) * length;
+  } else {
+    atom.x = svgP.x + 24;
+    atom.y = svgP.y + 24;
+  }
 
   pickedAtom.setAttribute("x", atom.x - 24);
   pickedAtom.setAttribute("y", atom.y - 24);
 
-  // redraw bonds
   bonds.forEach(b => {
     if (b.a === id || b.b === id) {
       const a = atoms.find(a => a.id === b.a);
       const bb = atoms.find(a => a.id === b.b);
-      drawBondImage(b.el, a, bb, b.order);
+      if (a && bb) {
+        drawBondImage(b.el, a, bb, b.order);
+      }
     }
   });
 });
