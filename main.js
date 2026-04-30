@@ -21,25 +21,32 @@ const canvas = document.getElementById("canvas");
 
 const soundCache = {};
 
-async function loadSoundFolder(folderPath) {
+async function loadSoundFolder(folderPath, prefix) {
   if (soundCache[folderPath]) return soundCache[folderPath];
 
-  // Fetch the directory listing
-  const res = await fetch(folderPath);
-  const html = await res.text();
+  const sounds = [];
+  let index = 1;
 
-  // Match ANY .wav file in the listing
-  const files = [...html.matchAll(/>([^<]+\.wav)</g)].map(m => m[1]);
+  while (true) {
+    const path = `${folderPath}${prefix}${index}.wav`;
 
-  // Preload audio objects
-  const sounds = files.map(file => new Audio(`${folderPath}/${file}`));
+    const res = await fetch(path);
+    if (!res.ok) break;
+
+    sounds.push(new Audio(path));
+    index++;
+  }
 
   soundCache[folderPath] = sounds;
   return sounds;
 }
 
 async function playSound(folder) {
-  const sounds = await loadSoundFolder(`assets/sounds/${folder}`);
+  // folder = "atom/place"
+  const parts = folder.split("/");
+  const prefix = parts[parts.length - 1]; // "place", "pickup", "delete", etc.
+
+  const sounds = await loadSoundFolder(`assets/sounds/${folder}/`, prefix);
   if (!sounds || sounds.length === 0) return;
 
   const sound = sounds[Math.floor(Math.random() * sounds.length)].cloneNode();
@@ -47,10 +54,6 @@ async function playSound(folder) {
   sound.play();
 }
 
-function snapToNearest60(angleDeg) {
-  const snapped = Math.round(angleDeg / 60) * 60;
-  return snapped;
-}
 
 /* ============================================================
    STATE SNAPSHOTS (UNDO / REDO)
