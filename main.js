@@ -189,7 +189,9 @@ function drawAtom(atom) {
       return;
     }
   }
-});}
+});
+
+return el; }
 
 
 let currentElementType = "C";
