@@ -2,90 +2,111 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>ChemPaint!</title>
+  <link rel="icon" href="assets/icons/atom.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
- <div id="toolbar">
-  <h2>ChemPaint</h2>
+  <aside id="toolbar" aria-label="Tools">
+    <h1>ChemPaint</h1>
 
-  <!-- ATOMS SECTION -->
-  <div class="tool-section">
-    <div class="section-header">
-      <img src="assets/icons/atom.png" class="section-icon">
-      <span>Select Atom</span>
-    </div>
+    <!-- ATOMS -->
+    <section class="tool-section" aria-labelledby="atomsHeading">
+      <div class="section-header">
+        <img src="assets/icons/atom.png" class="section-icon" alt="">
+        <span id="atomsHeading">Atoms</span>
+      </div>
 
-    <div id="elementPicker">
-      <button class="element-btn" data-element="C"></button>
-      <button class="element-btn" data-element="H"></button>
-      <button class="element-btn" data-element="O"></button>
-      <button class="element-btn" data-element="N"></button>
-      <button class="element-btn" data-element="S"></button>
-      <button class="element-btn" data-element="Cl"></button>
-      <button class="element-btn" data-element="Br"></button>
-      <button class="element-btn" data-element="F"></button>
-    </div>
-  </div>
+      <div id="elementPicker" class="picker">
+        <button type="button" class="element-btn" data-element="C"  title="Carbon (C)"   aria-label="Carbon"></button>
+        <button type="button" class="element-btn" data-element="H"  title="Hydrogen (H)" aria-label="Hydrogen"></button>
+        <button type="button" class="element-btn" data-element="O"  title="Oxygen (O)"   aria-label="Oxygen"></button>
+        <button type="button" class="element-btn" data-element="N"  title="Nitrogen (N)" aria-label="Nitrogen"></button>
+        <button type="button" class="element-btn" data-element="S"  title="Sulfur (S)"   aria-label="Sulfur"></button>
+        <button type="button" class="element-btn" data-element="Cl" title="Chlorine (Shift+L)" aria-label="Chlorine"></button>
+        <button type="button" class="element-btn" data-element="Br" title="Bromine (Shift+B)"  aria-label="Bromine"></button>
+        <button type="button" class="element-btn" data-element="F"  title="Fluorine (F)"  aria-label="Fluorine"></button>
+      </div>
+    </section>
 
-  <div class="divider"></div>
+    <div class="divider"></div>
 
-  <!-- BONDS SECTION -->
-  <div class="tool-section">
-    <div class="section-header">
-      <img src="assets/icons/bond.png" class="section-icon">
-      <span>Make Bonds</span>
-    </div>
+    <!-- BONDS -->
+    <section class="tool-section" aria-labelledby="bondsHeading">
+      <div class="section-header">
+        <img src="assets/icons/bond.png" class="section-icon" alt="">
+        <span id="bondsHeading">Bonds</span>
+      </div>
 
-    <div id="bondPicker">
-      <button class="bond-btn" data-bond="single"></button>
-      <button class="bond-btn" data-bond="double"></button>
-      <button class="bond-btn" data-bond="triple"></button>
-    </div>
-  </div>
+      <div id="bondPicker" class="picker">
+        <button type="button" class="bond-btn" data-bond="single" title="Single bond (1)" aria-label="Single bond"></button>
+        <button type="button" class="bond-btn" data-bond="double" title="Double bond (2)" aria-label="Double bond"></button>
+        <button type="button" class="bond-btn" data-bond="triple" title="Triple bond (3)" aria-label="Triple bond"></button>
+      </div>
+    </section>
 
-  <div class="divider"></div>
+    <div class="divider"></div>
 
-  <!-- MOVE / ERASE -->
-  <div class="tool-section">
-    <button class="tool-btn small" data-tool="move">
-      <img src="assets/icons/move.png">
-      <span>Move</span>
-    </button>
+    <!-- MOVE / ERASE -->
+    <section class="tool-section grid-2" aria-label="Move and erase">
+      <button type="button" class="tool-btn" data-tool="move" title="Move atoms (M)">
+        <img src="assets/icons/move.png" alt="">
+        <span>Move</span>
+      </button>
 
-    <button class="tool-btn small" data-tool="erase">
-      <img src="assets/icons/erase.png">
-      <span>Erase</span>
-    </button>
-  </div>
+      <button type="button" class="tool-btn" data-tool="erase" title="Erase (E or Delete)">
+        <img src="assets/icons/erase.png" alt="">
+        <span>Erase</span>
+      </button>
+    </section>
 
-  <div class="divider"></div>
+    <div class="divider"></div>
 
-  <!-- ACTIONS -->
-  <div class="tool-section">
-    <button id="undoBtn" class="action-btn small">
-      <img src="assets/icons/undo.png">
-      <span>Undo</span>
-    </button>
+    <!-- HISTORY -->
+    <section class="tool-section grid-2" aria-label="History">
+      <button type="button" id="undoBtn" class="action-btn" title="Undo (Ctrl+Z)">
+        <img src="assets/icons/undo.png" alt="">
+        <span>Undo</span>
+      </button>
 
-    <button id="redoBtn" class="action-btn small">
-      <img src="assets/icons/redo.png">
-      <span>Redo</span>
-    </button>
+      <button type="button" id="redoBtn" class="action-btn" title="Redo (Ctrl+Shift+Z)">
+        <img src="assets/icons/redo.png" alt="">
+        <span>Redo</span>
+      </button>
+    </section>
 
-    <button id="exportBtn" class="action-btn small">
-      <img src="assets/icons/save.png">
-      <span>Export</span>
-    </button>
-  </div>
-</div>
+    <button type="button" id="clearBtn" class="text-btn wide" title="Remove everything (you can undo this)">Clear all</button>
 
-<div id="canvasContainer">
-  <svg id="canvas" width="100%" height="100%"></svg>
-</div>
+    <div class="divider"></div>
 
+    <!-- FILES -->
+    <section class="tool-section grid-2" aria-label="Files">
+      <button type="button" id="saveBtn" class="text-btn" title="Save as a .json file (Ctrl+S)">Save</button>
+      <button type="button" id="openBtn" class="text-btn" title="Open a saved file">Open</button>
+      <button type="button" id="exportSvgBtn" class="text-btn" title="Export a standalone SVG picture">SVG</button>
+      <button type="button" id="exportPngBtn" class="text-btn" title="Export a PNG picture">PNG</button>
+    </section>
+    <input type="file" id="openInput" accept=".json,application/json" hidden>
 
-  <script src="main.js"></script>
+    <button type="button" id="muteBtn" class="text-btn wide" title="Turn sound on or off">Sound: on</button>
+
+    <p class="hint">
+      Bond tool: drag from an atom to grow a molecule.<br>
+      Hold Shift to move freely. A red ring means too many bonds.
+    </p>
+  </aside>
+
+  <main id="canvasContainer">
+    <svg id="canvas" role="img" aria-label="Molecule drawing area"></svg>
+    <div id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
