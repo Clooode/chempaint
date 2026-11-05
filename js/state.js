@@ -76,6 +76,18 @@ export function moveAtom(id, x, y) {
   emit("model");
 }
 
+/** Move many atoms at once (one "model" event). Unknown ids are ignored. */
+export function setPositions(positions) {
+  for (const p of positions) {
+    const atom = getAtom(p.id);
+    if (atom) {
+      atom.x = p.x;
+      atom.y = p.y;
+    }
+  }
+  emit("model");
+}
+
 /** Removes the atom and every bond attached to it. */
 export function removeAtom(id) {
   state.bonds = state.bonds.filter(b => b.a !== id && b.b !== id);

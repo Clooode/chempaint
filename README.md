@@ -21,6 +21,8 @@ then open <http://localhost:8000>.
 | **Move** | Press, drag, release. Atoms with one bond swing around their neighbour in 30° steps. |
 | **Erase** | Click or sweep over atoms and bonds. |
 
+**Tidy up** (button, or `T`) is a switch. While it is on, a tiny physics simulation keeps the molecule relaxed: bonds spring to a standard length (double and triple bonds are shorter), bonds around an atom spread to 120° / 180° / 90°, and atoms that aren't bonded push apart. Draw, erase, bond or undo and it settles back into shape. **You can drag atoms while it's on**: the atom you hold follows your pointer, the rest of the molecule is pulled along elastically, and when you let go it springs back. Turning it on is one undo step, and each drag after that is its own step. It goes idle when everything has settled. (With it off, dragging an atom that has one bond snaps it to 30° steps instead.)
+
 Hold **Shift** while dragging to turn angle snapping off. A red pulsing ring means an atom has more bonds than its usual valence (a hint only, nothing is blocked).
 
 Shortcuts: `Ctrl+Z` undo, `Ctrl+Shift+Z` / `Ctrl+Y` redo, `Ctrl+S` save, `Esc` cancel a drag, `1` `2` `3` bond order, `C H O N S F` elements (`Shift+L` Cl, `Shift+B` Br), `M` move, `E` / `Delete` erase, `A` atoms, `B` bonds.
@@ -35,6 +37,8 @@ js/
   state.js    model (plain data), UI state, tiny event bus
   chem.js     pure helpers: snapping, overlap, valence
   history.js  undo / redo (snapshots)
+  optimize.js physics relaxer behind "Tidy up" (pure, no DOM)
+  tidy.js     live "Tidy up" mode: runs the relaxer, pins dragged atoms
   render.js   keyed SVG renderer (bonds under atoms)
   input.js    pointer-event tools
   ui.js       toolbar, keyboard shortcuts, toasts

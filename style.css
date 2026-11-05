@@ -28,7 +28,7 @@ body {
 }
 
 #toolbar {
-  width: 248px;
+  width: 264px;           /* wide enough for 4 element buttons per row even with a scrollbar */
   flex-shrink: 0;
   height: 100%;
   overflow-y: auto;       /* short windows scroll instead of clipping Undo/Export */
@@ -215,7 +215,8 @@ button:focus-visible {
 /* the current tool */
 .element-btn.active,
 .bond-btn.active,
-.tool-btn.active {
+.tool-btn.active,
+.text-btn.active {
   border-color: var(--active);
   background-color: var(--active-bg);
   box-shadow: 0 0 0 2px var(--active);

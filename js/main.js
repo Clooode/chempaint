@@ -9,6 +9,8 @@
      input.js    pointer tools
      ui.js       toolbar + keyboard
      sound.js    sound effects
+     optimize.js physics relaxer (pure)
+     tidy.js     animates the relaxer on the live molecule
      export.js   SVG / PNG / JSON / autosave
 ============================================================ */
 

@@ -31,6 +31,7 @@ import {
   clampToCanvas, resolveOverlap, atomNear, snapAround, nextOrder, MIN_ATOM_DIST,
 } from "./chem.js";
 import { playSound } from "./sound.js";
+import { isLive, pinAtom, unpinAtom } from "./tidy.js";
 
 const DRAG_THRESHOLD = 4; // screen px before a press becomes a drag
 
@@ -275,6 +276,15 @@ function handleDragMove(e) {
       if (!atom) return cancelInteraction();
 
       let target = { x: p.x + drag.offset.x, y: p.y + drag.offset.y };
+
+      if (isLive()) {
+        // Tidy mode: hold the atom at the pointer and let the physics pull the
+        // rest of the molecule along (it does its own angle-tidying).
+        target = clampToCanvas(target);
+        pinAtom(atom.id, target.x, target.y);
+        break;
+      }
+
       const attached = bondsOf(atom.id);
       if (attached.length === 1 && !e.shiftKey) {
         // one bond: swing around its neighbour in tidy steps
@@ -330,6 +340,7 @@ function endDrag(e, cancelled) {
 
   switch (d.kind) {
     case "move":
+      unpinAtom(d.id); // tidy mode: let go, it springs back into shape
       setHeld(null);
       svg.classList.remove("dragging");
       if (d.moved && !cancelled) playSound("atom/drop");
@@ -380,6 +391,7 @@ export function cancelInteraction({ revert = false } = {}) {
       /* already released */
     }
     if (d.kind === "move") {
+      unpinAtom(d.id);
       setHeld(null);
       svg.classList.remove("dragging");
       if (revert && d.moved) undo();

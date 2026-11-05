@@ -5,6 +5,7 @@
 import { state, on, setTool, setElement, setBondOrderPref, clearAll, isEmpty, restore } from "./state.js";
 import { checkpoint, undo, redo, canUndo, canRedo } from "./history.js";
 import { cancelInteraction } from "./input.js";
+import { isLive, toggleLive } from "./tidy.js";
 import { playSound, isMuted, setMuted } from "./sound.js";
 import { exportSvg, exportPng, saveJson, parseMolecule } from "./export.js";
 
@@ -43,6 +44,11 @@ function doClear() {
   checkpoint(); // undoable, so no "are you sure?" needed
   clearAll();
   playSound("ui/erase");
+}
+
+function doTidy() {
+  toggleLive();
+  playSound("ui/click");
 }
 
 /** Run an async/throwing file action, showing friendly errors as toasts. */
@@ -85,6 +91,7 @@ for (const btn of $$("[data-tool]")) {
 $("#undoBtn").addEventListener("click", doUndo);
 $("#redoBtn").addEventListener("click", doRedo);
 $("#clearBtn").addEventListener("click", doClear);
+$("#tidyBtn").addEventListener("click", doTidy);
 
 $("#saveBtn").addEventListener("click", () => guarded(saveJson));
 $("#exportSvgBtn").addEventListener("click", () => guarded(exportSvg));
@@ -149,6 +156,15 @@ function refreshClear() {
   $("#clearBtn").disabled = isEmpty();
 }
 
+const tidyBtn = $("#tidyBtn");
+function refreshTidy() {
+  tidyBtn.textContent = isLive() ? "Tidy up: on" : "Tidy up: off";
+  tidyBtn.classList.toggle("active", isLive());
+  tidyBtn.setAttribute("aria-pressed", String(isLive()));
+}
+on("tidy", refreshTidy);
+refreshTidy();
+
 on("ui", refreshToolbar);
 on("history", refreshHistory);
 on("model", refreshClear);
@@ -199,6 +215,8 @@ window.addEventListener("keydown", e => {
   } else if (ELEMENT_KEYS[key]) {
     setElement(ELEMENT_KEYS[key]);
     setTool("atom");
+  } else if (key === "t" || key === "T") {
+    doTidy();
   } else if (key === "m" || key === "M") {
     chooseTool("move");
   } else if (key === "e" || key === "E") {
